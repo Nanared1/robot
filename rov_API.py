@@ -7,7 +7,7 @@ import syslog
 import time
 import math
 import threading
-from TopsidesGlobals import GLOBALS
+'''from TopsidesGlobals import GLOBALS
 #import topsidesComms
 
 # Change IP addresses for a production or development environment
@@ -35,18 +35,18 @@ s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind((ipHost, portHost))
 
 # Queue to hold send commands to be read by simulator
-simulator = queue.Queue()
+simulator = queue.Queue()'''
 
 
 # This function sends data to the ROV
 def sendData(inputData):
     global s
-    s.sendto(inputData.encode('utf-8'), ("192.168.88.5", portSend))
+    #s.sendto(inputData.encode('utf-8'), ("192.168.88.5", portSend))
 
 # TESTING
 def sendDataB(inputData):
     global s
-    s.sendto(inputData.encode('utf-8'), (ipSend, portSend))
+    #s.sendto(inputData.encode('utf-8'), (ipSend, portSend))
 
 # This function is constantly trying to receive data from the ROV
 def receiveData(flag):
@@ -114,3 +114,76 @@ def yaw(power):
         "aft-star-horz": -power,
     }
     print("Send command")
+    runThruster(tData)
+
+def heave(power):
+    good = False
+    try:
+        float(power)
+        good = True
+    except ValueError:
+        good = False
+        return False
+
+    tData = {
+        "fore-port-vert": power,
+        "fore-star-vert": power,
+        "aft-port-vert": -power,
+        "aft-star-vert": -power,
+    }
+    print("Send command")
+    runThruster(tData)
+
+def pitch(power):
+    good = False
+    try:
+        float(power)
+        good = True
+    except ValueError:
+        good = False
+        return False
+
+    tData = {
+        "fore-port-vert": power,
+        "fore-star-vert": power,
+        "aft-port-vert": power,
+        "aft-star-vert": power,
+    }
+    print("Send command")
+    runThruster(tData)
+
+def roll(power):
+    good = False
+    try:
+        float(power)
+        good = True
+    except ValueError:
+        good = False
+        return False
+
+    tData = {
+        "fore-port-vert": power,
+        "fore-star-vert": -power,
+        "aft-port-vert": -power,
+        "aft-star-vert": power,
+    }
+    print("Send command")
+    runThruster(tData)
+
+def surge(power):
+    good = False
+    try:
+        float(power)
+        good = True
+    except ValueError:
+        good = False
+        return False
+
+    tData = {
+        "fore-port-horz": power,
+        "fore-star-horz": -power,
+        "aft-port-horz": -power,
+        "aft-star-horz": power,
+    }
+    print("Send command")
+    runThruster(tData)
